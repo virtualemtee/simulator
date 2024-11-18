@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALCO Cell Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>VALCO Cell Simulator</h1>
+        <p class="subtitle">Visualize, Analyze, and Learn about Aluminum Production</p>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+            <button class="tab-button active" data-tab="cellDataTab">Cell Data</button>
+            <button class="tab-button" data-tab="visualizationTab">Visualization</button>
+            <button class="tab-button" data-tab="knowledgeBaseTab">Knowledge Base</button>
+        </div>
+
+        <!-- Tabs Content -->
+        <div id="cellDataTab" class="tab-content active">
+            <!-- Cell Data Content -->
+            <div class="sub-tabs">
+                <button class="sub-tab-button active" data-sub-tab="powerTab">Power</button>
+                <button class="sub-tab-button" data-sub-tab="chemistryTab">Chemistry</button>
+            </div>
+
+            <!-- Power Tab Content -->
+            <div id="powerTab" class="sub-tab-content active">
+                <div class="controls-output-box">
+                    <div class="controls-panel">
+                        <h2>Operating data</h2>
+                        <div class="controls">
+                            <div>
+                                <label for="current">Line Current (kA):</label>
+                                <input type="range" id="current" min="100" max="150" step="0.1">
+                                <span id="currentValue">200</span> kA
+                            </div>
+<!-- Inside Power Tab Content, update the controls section -->
+<div>
+    <label for="currentEfficiency">Current Efficiency (CE):</label>
+    <input type="number" id="currentEfficiency" min="0" max="100" step="0.1" value="85">
+    <span>%</span>
+</div>
+
+
+                            <div>
+                                <label for="acd">Anode-Cathode Distance (cm):</label>
+                                <input type="range" id="acd" min="2" max="5" step="0.1">
+                                <span id="acdValue">3</span> cm
+                            </div>
+                            <div>
+                                <label for="temperature">Bath Temperature (°C):</label>
+                                <input type="range" id="temperature" min="900" max="1000" step="1">
+                                <span id="temperatureValue">960</span> °C
+                            </div>
+                            <div>
+                                <label for="voltage">Cell Voltage (V):</label>
+                                <input type="range" id="voltageSlider" min="3.0" max="5.0" step="0.001">
+                                <span id="voltageValue">4.2</span> V
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="output-panel">
+                        <h2>Expected Results</h2>
+                        <div class="output">
+                            <p>Current Efficiency: <span id="ce">85</span>%</p>
+                            <p>Cell Voltage: <span id="voltageDisplay">4.2</span> V</p>
+                            <p>Aluminum Production: <span id="production">0</span> kg/ Cell day</p>
+                            <p>Energy Efficiency: <span id="sec">13.8</span> DCkWh/kg</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chemistry Tab Content -->
+            <div id="chemistryTab" class="sub-tab-content">
+                <div class="controls-output-box">
+                    <div class="controls-panel">
+                        
+                        <div class="controls">
+                            <h3>Alumina (Al₂O₃) Composition</h3>
+                            <div>
+                                <label for="alumina">Al₂O₃ (%):</label>
+                                <input type="range" id="alumina" min="85" max="100" step="0.1">
+                                <span id="aluminaValue">90</span> %
+                            </div>
+                            <div>
+                                <label for="na2o">Na₂O (%):</label>
+                                <input type="range" id="na2o" min="0" max="5" step="0.1">
+                                <span id="na2oValue">1</span> %
+                            </div>
+                            <div>
+                                <label for="cao">CaO (%):</label>
+                                <input type="range" id="cao" min="0" max="5" step="0.1">
+                                <span id="caoValue">1</span> %
+                            </div>
+                            <div>
+                                <label for="loi">LOI (H₂O, %):</label>
+                                <input type="range" id="loi" min="0" max="10" step="0.1">
+                                <span id="loiValue">5</span> %
+                            </div>
+
+                            <h3>Aluminum Fluoride (AlF₃) Composition</h3>
+                            <div>
+                                <label for="alf3">AlF₃ (%):</label>
+                                <input type="range" id="alf3" min="5" max="25" step="0.1">
+                                <span id="alf3Value">10</span> %
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="output-panel">
+                        <h2>Chemistry Results</h2>
+                        <div class="output">
+                            <p>Optimal Alumina Saturation: <span id="optimalAlumina">0</span> %</p>
+                            <p>Bath Composition Efficiency (Bath Ratio): <span id="bathEfficiency">0</span></p>
+                            <p>Bath Resistance: <span id="bathResistance">0</span> ohms</p>
+                            <p>Bath Temperature Effect: <span id="bathTemperature">0</span> °C</p>
+                            <p>Alumina Solubility: <span id="solubility">0</span> %</p>
+                            <p>Energy Efficiency Drop: <span id="energyEfficiencyDrop">0</span>%</p>
+                            <p>Current Efficiency Drop: <span id="currentEfficiencyDrop">0</span>%</p>
+                            <p>Current Efficiency: <span id="affectedCurrentEfficiency">0</span>%</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Visualization Tab Content -->
+        <div id="visualizationTab" class="tab-content">
+            <div class="visualization">
+                <h2>Visualize Cell Performance</h2>
+                <p>Interactive charts and graphs will appear here, providing insights into the relationship between parameters.</p>
+                <div class="chart-placeholder">
+                    <p>[Graph Placeholder]</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Knowledge Base Tab Content -->
+        <div id="knowledgeBaseTab" class="tab-content">
+            <div class="knowledge-base">
+                <h2>Equations Used</h2>
+                <p><strong>Power Equations:</strong></p>
+                <p>CE = 95 - 5 * |(Temperature - 960)| - 0.5 * (ACD - 3.5)^2 - 0.1 * (Line Current - 200)</p>
+                <p>Production = (Line Current * Current Efficiency * 1000) / 3.7</p>
+                <p><strong>Chemistry Equations:</strong></p>
+                <p>Optimal Alumina Saturation is a function of Al₂O₃ and AlF₃ composition.</p>
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <button id="savePdf" class="save-button">Save as PDF</button>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+</body>
+</html>

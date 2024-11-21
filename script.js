@@ -87,77 +87,72 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Update power results function
     let currentEfficiencyDrop = 0;
-    let energyDrop =0;
+    let energyDrop = 0;
 
-    // Update power results function
     const updatePowerResults = () => {
         const userEfficiency = parseFloat(document.getElementById("currentEfficiency").value); // User-provided CE
         const currentEfficiency = Math.max(0, userEfficiency - currentEfficiencyDrop); // Subtract drop, ensure CE is not negative
-        
+
         const theoreticalProduction = (8.0537 * currentSlider.value); // Calculate theoretical production
         const production = (theoreticalProduction * currentEfficiency) / 100; // Adjust by actual CE
-        const sec = (voltageSlider.value * currentSlider.value*24 ) / production; 
-        const energyEfficiency = (sec+energyDrop);
+        const sec = (voltageSlider.value * currentSlider.value * 24) / production; 
+        const energyEfficiency = sec + energyDrop;
+
         // Update output
         document.getElementById("ce").textContent = currentEfficiency.toFixed(2);
         document.getElementById("production").textContent = production.toFixed(2);
         document.getElementById("sec").textContent = energyEfficiency.toFixed(2);
     };
-    
 
-   // Update chemistry results function
-const updateChemistryResults = () => {
-    const alumina = parseFloat(aluminaSlider.value);
-    const alf3 = parseFloat(alf3Slider.value);
-    const na2o = parseFloat(na2oSlider.value);
-    const cao = parseFloat(caoSlider.value);
-    const loi = parseFloat(loiSlider.value);
-    const userEfficiency = parseFloat(document.getElementById("currentEfficiency").value);
-    const ceDrop = (na2o+cao)*0.5;
-    const affectedCurrentEfficiency = Math.max(0, userEfficiency - ceDrop); 
-    const bathRatio = alf3 / alumina; // AlF₃-to-Al₂O₃ ratio
-    const bathTemperatureEffect = 960 + (bathRatio * 10); // Approximation of effect on bath temperature
-    const solubility = (alumina / (alumina + alf3)) * 100; // Alumina solubility
-    const bathResistance = 1.6 + (bathRatio * 0.05); // Resistance effect of bath ratio
-    const energyEfficiencyDrop = (na2o + cao + loi) * 0.02; // Effect of impurities on energy efficiency
+    const updateChemistryResults = () => {
+        const alumina = parseFloat(aluminaSlider.value);
+        const alf3 = parseFloat(alf3Slider.value);
+        const na2o = parseFloat(na2oSlider.value);
+        const cao = parseFloat(caoSlider.value);
+        const loi = parseFloat(loiSlider.value);
+        const userEfficiency = parseFloat(document.getElementById("currentEfficiency").value);
 
-    // Update CE drop based on impurities
-    currentEfficiencyDrop = (na2o + cao) * 0.5; // Impact of impurities on CE
+        const ceDrop = (na2o + cao) * 0.5;
+        const affectedCurrentEfficiency = Math.max(0, userEfficiency - ceDrop); 
+        const bathRatio = alf3 / alumina; 
+        const bathTemperatureEffect = 960 + (bathRatio * 10); 
+        const solubility = (alumina / (alumina + alf3)) * 100; 
+        const bathResistance = 1.6 + (bathRatio * 0.05);
+        const energyEfficiencyDrop = (na2o + cao + loi) * 0.02;
 
-    document.getElementById("optimalAlumina").textContent = alumina.toFixed(2);
-    document.getElementById("bathEfficiency").textContent = bathRatio.toFixed(2);
-    document.getElementById("bathResistance").textContent = bathResistance.toFixed(2);
-    document.getElementById("bathTemperature").textContent = bathTemperatureEffect.toFixed(2);
-    document.getElementById("solubility").textContent = solubility.toFixed(2);
-    document.getElementById("energyEfficiencyDrop").textContent = energyEfficiencyDrop.toFixed(2);
-    document.getElementById("currentEfficiencyDrop").textContent = currentEfficiencyDrop.toFixed(2);
-    document.getElementById("affectedCurrentEfficiency").textContent = affectedCurrentEfficiency.toFixed(2);
+        currentEfficiencyDrop = ceDrop;
 
-    // Trigger a power results update as CE drop impacts those calculations
-    updatePowerResults();
-};
+        document.getElementById("optimalAlumina").textContent = alumina.toFixed(2);
+        document.getElementById("bathEfficiency").textContent = bathRatio.toFixed(2);
+        document.getElementById("bathResistance").textContent = bathResistance.toFixed(2);
+        document.getElementById("bathTemperature").textContent = bathTemperatureEffect.toFixed(2);
+        document.getElementById("solubility").textContent = solubility.toFixed(2);
+        document.getElementById("energyEfficiencyDrop").textContent = energyEfficiencyDrop.toFixed(2);
+        document.getElementById("currentEfficiencyDrop").textContent = currentEfficiencyDrop.toFixed(2);
+        document.getElementById("affectedCurrentEfficiency").textContent = affectedCurrentEfficiency.toFixed(2);
 
-    // Load saved values from localStorage
-    function loadSavedValues() {
+        updatePowerResults();
+    };
+
+    const loadSavedValues = () => {
         const savedValues = JSON.parse(localStorage.getItem("powerValues"));
         if (savedValues) {
             currentSlider.value = savedValues.current;
             acdSlider.value = savedValues.acd;
             temperatureSlider.value = savedValues.temperature;
             voltageSlider.value = savedValues.voltage;
-            document.getElementById("currentEfficiency").value = savedValues.currentEfficiency;  // Set the currentEfficiency value
+            document.getElementById("currentEfficiency").value = savedValues.currentEfficiency;
 
             currentValueDisplay.textContent = savedValues.current;
             acdValueDisplay.textContent = savedValues.acd;
             temperatureValueDisplay.textContent = savedValues.temperature;
             voltageValueDisplay.textContent = savedValues.voltage;
 
-            updatePowerResults();  // Now this can safely be called after the function is defined
+            updatePowerResults();
         }
-    }
+    };
 
-    // Load saved chemistry values from localStorage
-    function loadSavedChemistryValues() {
+    const loadSavedChemistryValues = () => {
         const savedChemistryValues = JSON.parse(localStorage.getItem("chemistryValues"));
         if (savedChemistryValues) {
             aluminaSlider.value = savedChemistryValues.alumina;
@@ -172,35 +167,32 @@ const updateChemistryResults = () => {
             loiValueDisplay.textContent = savedChemistryValues.loi;
             alf3ValueDisplay.textContent = savedChemistryValues.alf3;
 
-            updateChemistryResults();  // Now this can safely be called after the function is defined
+            updateChemistryResults();
         }
-    }
+    };
 
-    // Save the updated values to localStorage
-    function saveValuesToLocalStorage() {
+    const saveValuesToLocalStorage = () => {
         const values = {
             current: currentSlider.value,
             acd: acdSlider.value,
             temperature: temperatureSlider.value,
             voltage: voltageSlider.value,
-            currentEfficiency: document.getElementById("currentEfficiency").value,  // Save CE value
+            currentEfficiency: document.getElementById("currentEfficiency").value,
         };
         localStorage.setItem("powerValues", JSON.stringify(values));
-    }
+    };
 
-    // Save chemistry values to localStorage
-    function saveChemistryValuesToLocalStorage() {
+    const saveChemistryValuesToLocalStorage = () => {
         const chemistryValues = {
             alumina: aluminaSlider.value,
             na2o: na2oSlider.value,
             cao: caoSlider.value,
             loi: loiSlider.value,
-            alf3: alf3Slider.value
+            alf3: alf3Slider.value,
         };
         localStorage.setItem("chemistryValues", JSON.stringify(chemistryValues));
-    }
+    };
 
-    // Add event listeners to sliders for power parameters
     currentSlider.addEventListener("input", () => {
         currentValueDisplay.textContent = currentSlider.value;
         updatePowerResults();
@@ -219,16 +211,13 @@ const updateChemistryResults = () => {
         saveValuesToLocalStorage();
     });
 
-    // Add this inside the DOMContentLoaded event listener
-voltageSlider.addEventListener("input", () => {
-    voltageValueDisplay.textContent = voltageSlider.value;
-    document.getElementById("voltageDisplay").textContent = voltageSlider.value;
-    
+    voltageSlider.addEventListener("input", () => {
+        voltageValueDisplay.textContent = voltageSlider.value;
+        document.getElementById("voltageDisplay").textContent = voltageSlider.value; // Corrected to update in both sections
         updatePowerResults();
         saveValuesToLocalStorage();
     });
 
-    // Add event listeners to chemistry sliders
     aluminaSlider.addEventListener("input", () => {
         aluminaValueDisplay.textContent = aluminaSlider.value;
         updateChemistryResults();
@@ -259,26 +248,22 @@ voltageSlider.addEventListener("input", () => {
         saveChemistryValuesToLocalStorage();
     });
 
-    
     const ceInputField = document.getElementById("currentEfficiency");
     ceInputField.addEventListener("input", () => {
         let ceValue = parseFloat(ceInputField.value);
-        
-        // Ensure CE is between 0 and 100
+
         if (ceValue < 0) ceValue = 0;
         if (ceValue > 100) ceValue = 100;
-        
+
         ceInputField.value = ceValue;
 
         updatePowerResults();
         saveValuesToLocalStorage();
     });
 
-    // Initialize default values and load saved ones
     loadSavedValues();
     loadSavedChemistryValues();
 
-    // Save as PDF functionality
     const savePdfButton = document.getElementById("savePdf");
     savePdfButton.addEventListener("click", () => {
         const element = document.querySelector(".container");
@@ -287,7 +272,7 @@ voltageSlider.addEventListener("input", () => {
             filename: "VALCO_Cell_Simulator_Results.pdf",
             image: { type: "jpeg", quality: 0.98 },
             html2canvas: { dpi: 192, letterRendering: true },
-            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
         };
         html2pdf().from(element).set(options).save();
     });

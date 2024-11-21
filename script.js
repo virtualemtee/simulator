@@ -135,26 +135,27 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const loadSavedValues = () => {
-        const savedValues = JSON.parse(localStorage.getItem("powerValues"));
-        if (savedValues) {
-            currentSlider.value = savedValues.current;
-            acdSlider.value = savedValues.acd;
-            temperatureSlider.value = savedValues.temperature;
-            voltageSlider.value = savedValues.voltage; // Ensure voltageSlider is updated
-            document.getElementById("currentEfficiency").value = savedValues.currentEfficiency;
-    
-            currentValueDisplay.textContent = savedValues.current;
-            acdValueDisplay.textContent = savedValues.acd;
-            temperatureValueDisplay.textContent = savedValues.temperature;
-            voltageValueDisplay.textContent = savedValues.voltage;
-    
-            // Update the voltage value in the Expected Results section
-            document.getElementById("voltageDisplay").textContent = savedValues.voltage;
-    
-            // Recalculate the Expected Results using the saved data
-            updatePowerResults();
-        }
-    };
+    const savedValues = JSON.parse(localStorage.getItem("powerValues"));
+    if (savedValues) {
+        currentSlider.value = savedValues.current;
+        acdSlider.value = savedValues.acd;
+        temperatureSlider.value = savedValues.temperature;
+        voltageSlider.value = savedValues.voltage; // Ensure voltageSlider is updated
+        document.getElementById("currentEfficiency").value = savedValues.currentEfficiency;
+
+        currentValueDisplay.textContent = savedValues.current;
+        acdValueDisplay.textContent = savedValues.acd;
+        temperatureValueDisplay.textContent = savedValues.temperature;
+        voltageValueDisplay.textContent = savedValues.voltage;
+
+        // Manually update the Expected Results voltage display
+        document.getElementById("voltageDisplay").textContent = savedValues.voltage;
+
+        // Trigger calculations to refresh all dependent values
+        updatePowerResults();
+    }
+};
+
 
 
     const loadSavedChemistryValues = () => {

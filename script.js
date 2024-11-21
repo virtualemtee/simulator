@@ -221,8 +221,9 @@ const updateChemistryResults = () => {
 
     // Add this inside the DOMContentLoaded event listener
 voltageSlider.addEventListener("input", () => {
-    // Update the voltage display value
+    
     document.getElementById("voltageDisplay").textContent = voltageSlider.value;
+    voltageValueDisplay.textContent = voltageSlider.value;
         updatePowerResults();
         saveValuesToLocalStorage();
     });

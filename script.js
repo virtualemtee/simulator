@@ -134,23 +134,28 @@ document.addEventListener("DOMContentLoaded", () => {
         updatePowerResults();
     };
 
-    const loadSavedValues = () => {
-        const savedValues = JSON.parse(localStorage.getItem("powerValues"));
-        if (savedValues) {
-            currentSlider.value = savedValues.current;
-            acdSlider.value = savedValues.acd;
-            temperatureSlider.value = savedValues.temperature;
-            voltageSlider.value = savedValues.voltage;
-            document.getElementById("currentEfficiency").value = savedValues.currentEfficiency;
+const loadSavedValues = () => {
+    const savedValues = JSON.parse(localStorage.getItem("powerValues"));
+    if (savedValues) {
+        currentSlider.value = savedValues.current;
+        acdSlider.value = savedValues.acd;
+        temperatureSlider.value = savedValues.temperature;
+        voltageSlider.value = savedValues.voltage; // Ensure voltageSlider is updated
+        document.getElementById("currentEfficiency").value = savedValues.currentEfficiency;
 
-            currentValueDisplay.textContent = savedValues.current;
-            acdValueDisplay.textContent = savedValues.acd;
-            temperatureValueDisplay.textContent = savedValues.temperature;
-            voltageValueDisplay.textContent = savedValues.voltage;
+        currentValueDisplay.textContent = savedValues.current;
+        acdValueDisplay.textContent = savedValues.acd;
+        temperatureValueDisplay.textContent = savedValues.temperature;
+        voltageValueDisplay.textContent = savedValues.voltage;
 
-            updatePowerResults();
-        }
-    };
+        // Update the voltage value in the Expected Results section
+        document.getElementById("voltageDisplay").textContent = savedValues.voltage;
+
+        // Recalculate the Expected Results using the saved data
+        updatePowerResults();
+    }
+};
+
 
     const loadSavedChemistryValues = () => {
         const savedChemistryValues = JSON.parse(localStorage.getItem("chemistryValues"));
